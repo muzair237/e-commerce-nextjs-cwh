@@ -4,16 +4,16 @@ import Link from 'next/link';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiPlusCircle, BiMinusCircle } from 'react-icons/bi';
 import { MdShoppingCartCheckout } from 'react-icons/md';
-
-
-import { Offcanvas, OffcanvasHeader, OffcanvasBody } from 'reactstrap';
+import { Offcanvas, OffcanvasHeader, Button, OffcanvasBody, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 
 export default function Navbar() {
     const [isOffcanvasOpen, setOffcanvasOpen] = useState(false);
+    const [modal, setModal] = useState(false);
 
-    const toggleOffcanvas = () => {
-        setOffcanvasOpen(!isOffcanvasOpen);
-    };
+
+    const toggleOffcanvas = () => setOffcanvasOpen(!isOffcanvasOpen);
+
+    const toggleModal = () => setModal(!modal);
 
     return (
         <>
@@ -75,7 +75,21 @@ export default function Navbar() {
                             <p className={`${style.itemName}`}> — 1 —</p>
                             <BiPlusCircle type='button' className='fs-4 mx-2' />
                         </div>
-                        <button className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </button>
+                        <div className="">
+                            <button className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </button>
+                            <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart <MdShoppingCartCheckout className='fs-4' /> </button>
+                            <Modal isOpen={modal} toggle={toggleModal}>
+                                <ModalHeader toggle={toggleModal}>Are you sure you want to clear the Cart?</ModalHeader>
+                                <ModalFooter>
+                                    <Button color="danger" onClick={toggleModal}>
+                                        Yes, Clear Cart.
+                                    </Button>{' '}
+                                    <Button color="secondary" onClick={toggleModal}>
+                                        Cancel
+                                    </Button>
+                                </ModalFooter>
+                            </Modal>
+                        </div>
                     </OffcanvasBody>
                 </Offcanvas>
             </div>
