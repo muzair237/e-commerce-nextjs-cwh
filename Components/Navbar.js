@@ -5,15 +5,33 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiPlusCircle, BiMinusCircle } from 'react-icons/bi';
 import { MdShoppingCartCheckout } from 'react-icons/md';
 import { Offcanvas, OffcanvasHeader, Button, OffcanvasBody, Modal, ModalHeader, ModalFooter } from 'reactstrap';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    tShirtsDecrement,
+    hoodiesDecrement,
+    stickersDecrement,
+    mugsDecrement
+} from "../slices/cart/reducer";
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Navbar() {
+    const dispatch = useDispatch();
+    const cartData = useSelector((state) => state?.Cart);
     const [isOffcanvasOpen, setOffcanvasOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
 
     const toggleOffcanvas = () => setOffcanvasOpen(!isOffcanvasOpen);
-
     const toggleModal = () => setModal(!modal);
+    const clearCart = () => {
+        toast.success("Cart Cleared Successfully!")
+        dispatch(tShirtsDecrement(cartData?.tShirts));
+        dispatch(hoodiesDecrement(cartData?.hoodies));
+        dispatch(stickersDecrement(cartData?.stickers));
+        dispatch(mugsDecrement(cartData?.mugs));
+        toggleModal();
+        toggleOffcanvas();
+    }
 
     return (
         <>
@@ -54,34 +72,35 @@ export default function Navbar() {
                         <div className="d-flex">
                             <p className={`${style.itemName}`}>1. T-Shirts</p>
                             <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — 1 —</p>
+                            <p className={`${style.itemName}`}> — {cartData?.tShirts} —</p>
                             <BiPlusCircle type='button' className='fs-4 mx-2' />
                         </div>
                         <div className="d-flex">
                             <p className={`${style.itemName}`}>2. Hoodies</p>
                             <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — 1 —</p>
+                            <p className={`${style.itemName}`}> — {cartData?.hoodies} —</p>
                             <BiPlusCircle type='button' className='fs-4 mx-2' />
                         </div>
                         <div className="d-flex">
                             <p className={`${style.itemName}`}>3. Stickers</p>
                             <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — 1 —</p>
+                            <p className={`${style.itemName}`}> — {cartData?.stickers} —</p>
                             <BiPlusCircle type='button' className='fs-4 mx-2' />
                         </div>
                         <div className="d-flex">
                             <p className={`${style.itemName}`}>4. Mugs</p>
                             <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — 1 —</p>
+                            <p className={`${style.itemName}`}> — {cartData?.mugs} —</p>
                             <BiPlusCircle type='button' className='fs-4 mx-2' />
                         </div>
                         <div className="">
                             <button className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </button>
                             <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart <MdShoppingCartCheckout className='fs-4' /> </button>
+
                             <Modal isOpen={modal} toggle={toggleModal}>
                                 <ModalHeader toggle={toggleModal}>Are you sure you want to clear the Cart?</ModalHeader>
                                 <ModalFooter>
-                                    <Button color="danger" onClick={toggleModal}>
+                                    <Button color="danger" onClick={clearCart}>
                                         Yes, Clear Cart.
                                     </Button>{' '}
                                     <Button color="secondary" onClick={toggleModal}>
@@ -93,6 +112,17 @@ export default function Navbar() {
                     </OffcanvasBody>
                 </Offcanvas>
             </div>
+            <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                theme="light"
+            />
         </>
     )
 }
