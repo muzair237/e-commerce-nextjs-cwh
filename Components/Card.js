@@ -12,7 +12,15 @@ export default function Card(props) {
                     <h5 className="card-title">{props.title}</h5>
                     <h6 className="card-subtitle mb-2 text-body-secondary">{props.description}</h6>
                     <p className="card-text text-dark">{props.price}</p>
-                    <Link href={`/products/${props.title}`} className="btn btn-primary">Buy Now</Link>
+                    <Link href={{
+                        pathname: `products/${props.title}`,
+                        query: {
+                            title: props.title,
+                            price: props.price,
+                            description: props.description,
+                            image: props.image
+                        }
+                    }} className="btn btn-primary">Buy Now</Link>
                 </div>
             </div>
         </>

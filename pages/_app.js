@@ -8,6 +8,8 @@ import rootReducer from '../slices';
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const persistConfig = {
   key: 'root',
@@ -40,6 +42,18 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
         <Footer />
       </Provider>
+      <ToastContainer
+      position="top-right"
+      autoClose={800}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover={false}
+      theme="light"
+      />
     </>
   );
 }

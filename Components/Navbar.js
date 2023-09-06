@@ -6,17 +6,14 @@ import { BiPlusCircle, BiMinusCircle } from 'react-icons/bi';
 import { MdShoppingCartCheckout } from 'react-icons/md';
 import { Offcanvas, OffcanvasHeader, Button, OffcanvasBody, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    tShirtsDecrement,
-    hoodiesDecrement,
-    stickersDecrement,
-    mugsDecrement
-} from "../slices/cart/reducer";
-import { ToastContainer,toast } from 'react-toastify';
+import { resetCart } from "../slices/cart/reducer";
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Navbar() {
     const dispatch = useDispatch();
     const cartData = useSelector((state) => state?.Cart);
+    const areAllCartDataNull = Object.values(cartData).every((value) => value === 0);
+
     const [isOffcanvasOpen, setOffcanvasOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
@@ -25,10 +22,7 @@ export default function Navbar() {
     const toggleModal = () => setModal(!modal);
     const clearCart = () => {
         toast.success("Cart Cleared Successfully!")
-        dispatch(tShirtsDecrement(cartData?.tShirts));
-        dispatch(hoodiesDecrement(cartData?.hoodies));
-        dispatch(stickersDecrement(cartData?.stickers));
-        dispatch(mugsDecrement(cartData?.mugs));
+        dispatch(resetCart());
         toggleModal();
         toggleOffcanvas();
     }
@@ -37,7 +31,7 @@ export default function Navbar() {
         <>
             <nav className="navbar sticky-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" href="/">Navbar</Link>
+                    <Link className="navbar-brand" href="/">Wear The Code</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -64,65 +58,62 @@ export default function Navbar() {
                 </div>
             </nav>
             <div>
-                <Offcanvas scrollable direction="end" isOpen={isOffcanvasOpen} toggle={toggleOffcanvas}>
+                <Offcanvas className={style.montserrat} scrollable direction="end" isOpen={isOffcanvasOpen} toggle={toggleOffcanvas}>
                     <OffcanvasHeader toggle={toggleOffcanvas}>
                         Shopping Cart
                     </OffcanvasHeader>
-                    <OffcanvasBody>
-                        <div className="d-flex">
-                            <p className={`${style.itemName}`}>1. T-Shirts</p>
-                            <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — {cartData?.tShirts} —</p>
-                            <BiPlusCircle type='button' className='fs-4 mx-2' />
-                        </div>
-                        <div className="d-flex">
-                            <p className={`${style.itemName}`}>2. Hoodies</p>
-                            <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — {cartData?.hoodies} —</p>
-                            <BiPlusCircle type='button' className='fs-4 mx-2' />
-                        </div>
-                        <div className="d-flex">
-                            <p className={`${style.itemName}`}>3. Stickers</p>
-                            <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — {cartData?.stickers} —</p>
-                            <BiPlusCircle type='button' className='fs-4 mx-2' />
-                        </div>
-                        <div className="d-flex">
-                            <p className={`${style.itemName}`}>4. Mugs</p>
-                            <BiMinusCircle type='button' className='fs-4 mx-2' />
-                            <p className={`${style.itemName}`}> — {cartData?.mugs} —</p>
-                            <BiPlusCircle type='button' className='fs-4 mx-2' />
-                        </div>
-                        <div className="">
-                            <button className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </button>
-                            <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart <MdShoppingCartCheckout className='fs-4' /> </button>
+                    {
+                        areAllCartDataNull ? (
+                            <OffcanvasHeader>
+                                Cart is Empty! Enter Few Items to Checkout!
+                            </OffcanvasHeader>
+                        ) : (
+                            <OffcanvasBody>
+                                <div className="d-flex">
+                                    <p className={`${style.itemName}`}>1. T-Shirts</p>
+                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <p className={`${style.itemName}`}> — {cartData?.tShirt} —</p>
+                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                </div>
+                                <div className="d-flex">
+                                    <p className={`${style.itemName}`}>2. Hoodies</p>
+                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <p className={`${style.itemName}`}> — {cartData?.hoodie} —</p>
+                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                </div>
+                                <div className="d-flex">
+                                    <p className={`${style.itemName}`}>3. Stickers</p>
+                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <p className={`${style.itemName}`}> — {cartData?.sticker} —</p>
+                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                </div>
+                                <div className="d-flex">
+                                    <p className={`${style.itemName}`}>4. Mugs</p>
+                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <p className={`${style.itemName}`}> — {cartData?.mug} —</p>
+                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                </div>
+                                <div className="">
+                                    <button className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </button>
+                                    <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart <MdShoppingCartCheckout className='fs-4' /> </button>
 
-                            <Modal isOpen={modal} toggle={toggleModal}>
-                                <ModalHeader toggle={toggleModal}>Are you sure you want to clear the Cart?</ModalHeader>
-                                <ModalFooter>
-                                    <Button color="danger" onClick={clearCart}>
-                                        Yes, Clear Cart.
-                                    </Button>{' '}
-                                    <Button color="secondary" onClick={toggleModal}>
-                                        Cancel
-                                    </Button>
-                                </ModalFooter>
-                            </Modal>
-                        </div>
-                    </OffcanvasBody>
+                                    <Modal isOpen={modal} toggle={toggleModal}>
+                                        <ModalHeader toggle={toggleModal}>Are you sure you want to clear the Cart?</ModalHeader>
+                                        <ModalFooter>
+                                            <Button color="danger" onClick={clearCart}>
+                                                Yes, Clear Cart.
+                                            </Button>{' '}
+                                            <Button color="secondary" onClick={toggleModal}>
+                                                Cancel
+                                            </Button>
+                                        </ModalFooter>
+                                    </Modal>
+                                </div>
+                            </OffcanvasBody>
+                        )
+                    }
                 </Offcanvas>
             </div>
-            <ToastContainer
-                position="top-right"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                theme="light"
-            />
         </>
     )
 }

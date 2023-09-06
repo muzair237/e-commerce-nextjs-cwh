@@ -1,43 +1,51 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
-    tShirts: 5,
-    hoodies: 5,
-    stickers: 5,
-    mugs: 5
-}
+    tShirt: 0,
+    hoodie: 0,
+    sticker: 0,
+    mug: 0
+};
+
 
 const cartSlice = createSlice({
     name: "Cart",
     initialState,
     reducers: {
+        resetCart: (state) => {
+            state.tShirt = 0;
+            state.hoodie = 0;
+            state.sticker = 0;
+            state.mug = 0;
+        },
         tShirtsIncrement: (state, action) => {
-            state.tShirts += action.payload;
+            state.tShirt = state.tShirt + action.payload;
         },
         tShirtsDecrement: (state, action) => {
-            state.tShirts -= action.payload;
+            state.tShirt -= action.payload;
         },
         hoodiesIncrement: (state, action) => {
-            state.hoodies += action.payload;
+            state.hoodie += action.payload;
         },
         hoodiesDecrement: (state, action) => {
-            state.hoodies -= action.payload;
+            state.hoodie -= action.payload;
         },
         stickersIncrement: (state, action) => {
-            state.stickers += action.payload;
+            state.sticker += action.payload;
         },
         stickersDecrement: (state, action) => {
-            state.stickers -= action.payload;
+            state.sticker -= action.payload;
         },
         mugsIncrement: (state, action) => {
-            state.mugs += action.payload;
+            state.mug += action.payload;
         },
         mugsDecrement: (state, action) => {
-            state.mugs -= action.payload;
+            state.mug -= action.payload;
         }
     }
 })
 export const {
+    resetCart,
     tShirtsIncrement,
     tShirtsDecrement,
     hoodiesIncrement,
