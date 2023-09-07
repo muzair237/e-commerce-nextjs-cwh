@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import style from "../styles/navbar.module.css"
+
 import Link from 'next/link';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiPlusCircle, BiMinusCircle } from 'react-icons/bi';
 import { MdShoppingCartCheckout } from 'react-icons/md';
 import { Offcanvas, OffcanvasHeader, Button, OffcanvasBody, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetCart } from "../slices/cart/reducer";
+import {
+    resetCart,
+    tShirtsIncrement,
+    tShirtsDecrement,
+    hoodiesIncrement,
+    hoodiesDecrement,
+    stickersIncrement,
+    stickersDecrement,
+    mugsIncrement,
+    mugsDecrement
+} from "../slices/cart/reducer";
 import { ToastContainer, toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
 export default function Navbar() {
     const dispatch = useDispatch();
@@ -58,44 +70,44 @@ export default function Navbar() {
                 </div>
             </nav>
             <div>
-                <Offcanvas className={style.montserrat} scrollable direction="end" isOpen={isOffcanvasOpen} toggle={toggleOffcanvas}>
+                <Offcanvas scrollable direction="end" isOpen={isOffcanvasOpen} toggle={toggleOffcanvas}>
                     <OffcanvasHeader toggle={toggleOffcanvas}>
-                        Shopping Cart
+                        <p className="outfit fw-bold">Shopping Cart</p>
                     </OffcanvasHeader>
                     {
                         areAllCartDataNull ? (
                             <OffcanvasHeader>
-                                Cart is Empty! Enter Few Items to Checkout!
+                                <p className="outfit fw-medium fs-5">Cart is Empty! Enter Few Items to Checkout!</p>
                             </OffcanvasHeader>
                         ) : (
-                            <OffcanvasBody>
+                            <OffcanvasBody className="outfit fw-medium fs-5">
                                 <div className="d-flex">
                                     <p className={`${style.itemName}`}>1. T-Shirts</p>
-                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <BiMinusCircle type='button' onClick={()=>dispatch(tShirtsDecrement(1))} className='fs-4 mx-2' />
                                     <p className={`${style.itemName}`}> — {cartData?.tShirt} —</p>
-                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                    <BiPlusCircle onCl type='button' onClick={()=>dispatch(tShirtsIncrement(1))} className='fs-4 mx-2' />
                                 </div>
                                 <div className="d-flex">
                                     <p className={`${style.itemName}`}>2. Hoodies</p>
-                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <BiMinusCircle type='button' onClick={()=>dispatch(hoodiesDecrement(1))} className='fs-4 mx-2' />
                                     <p className={`${style.itemName}`}> — {cartData?.hoodie} —</p>
-                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                    <BiPlusCircle type='button' onClick={()=>dispatch(hoodiesIncrement(1))} className='fs-4 mx-2' />
                                 </div>
                                 <div className="d-flex">
                                     <p className={`${style.itemName}`}>3. Stickers</p>
-                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <BiMinusCircle type='button' onClick={()=>dispatch(stickersDecrement(1))} className='fs-4 mx-2' />
                                     <p className={`${style.itemName}`}> — {cartData?.sticker} —</p>
-                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                    <BiPlusCircle type='button' onClick={()=>dispatch(stickersIncrement(1))} className='fs-4' />
                                 </div>
                                 <div className="d-flex">
                                     <p className={`${style.itemName}`}>4. Mugs</p>
-                                    <BiMinusCircle type='button' className='fs-4 mx-2' />
+                                    <BiMinusCircle type='button' onClick={()=>dispatch(mugsDecrement(1))} className='fs-4 mx-2' />
                                     <p className={`${style.itemName}`}> — {cartData?.mug} —</p>
-                                    <BiPlusCircle type='button' className='fs-4 mx-2' />
+                                    <BiPlusCircle type='button' onClick={()=>dispatch(mugsIncrement(1))} className='fs-4 mx-2' />
                                 </div>
-                                <div className="">
+                                <div className="mt-4">
                                     <button className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </button>
-                                    <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart <MdShoppingCartCheckout className='fs-4' /> </button>
+                                    <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart</button>
 
                                     <Modal isOpen={modal} toggle={toggleModal}>
                                         <ModalHeader toggle={toggleModal}>Are you sure you want to clear the Cart?</ModalHeader>

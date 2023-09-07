@@ -19,31 +19,32 @@ const cartSlice = createSlice({
             state.mug = 0;
         },
         tShirtsIncrement: (state, action) => {
-            state.tShirt = state.tShirt + action.payload;
+            state.tShirt = Math.max(0, state.tShirt + action.payload); 
         },
         tShirtsDecrement: (state, action) => {
-            state.tShirt -= action.payload;
+            state.tShirt = Math.max(0, state.tShirt - action.payload); 
         },
         hoodiesIncrement: (state, action) => {
-            state.hoodie += action.payload;
+            state.hoodie = Math.max(0, state.hoodie + action.payload); 
         },
         hoodiesDecrement: (state, action) => {
-            state.hoodie -= action.payload;
+            state.hoodie = Math.max(0, state.hoodie - action.payload); 
         },
         stickersIncrement: (state, action) => {
-            state.sticker += action.payload;
+            state.sticker = Math.max(0, state.sticker + action.payload); 
         },
         stickersDecrement: (state, action) => {
-            state.sticker -= action.payload;
+            state.sticker = Math.max(0, state.sticker - action.payload); 
         },
         mugsIncrement: (state, action) => {
-            state.mug += action.payload;
+            state.mug = Math.max(0, state.mug + action.payload); 
         },
         mugsDecrement: (state, action) => {
-            state.mug -= action.payload;
-        }
-    }
-})
+            state.mug = Math.max(0, state.mug - action.payload); 
+        },
+    },
+});
+
 export const {
     resetCart,
     tShirtsIncrement,

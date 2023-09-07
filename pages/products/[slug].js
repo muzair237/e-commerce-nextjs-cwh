@@ -73,7 +73,7 @@ export default function slug() {
               </div>
               <p className="lead">{description}</p>
               <form onSubmit={handleCartItem}>
-                <div className="d-flex">
+                <div className="d-flex mt-3">
                   <input className="form-control text-center me-3" id="cartItem" name="cartItem" onChange={(e) => {
                     e.preventDefault();
                     setCartItem(e.target.value);

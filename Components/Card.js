@@ -6,7 +6,7 @@ import Link from "next/link"
 export default function Card(props) {
     return (
         <>
-            <div className="card border-info" style={{ width: "22rem" }}>
+            <div className="card border-info mx-auto" style={{ width: "22rem" }}>
                 <Image className="mx-auto" src={props.image} width={200} height={200} />
                 <div className="card-body">
                     <h5 className="card-title">{props.title}</h5>
@@ -20,7 +20,7 @@ export default function Card(props) {
                             description: props.description,
                             image: props.image
                         }
-                    }} className="btn btn-primary">Buy Now</Link>
+                    }} className="btn btn-outline-dark btn-sm mt-2">Buy Now</Link>
                 </div>
             </div>
         </>

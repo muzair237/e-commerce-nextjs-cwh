@@ -1,4 +1,7 @@
 /* styles/globals.css */
+*{
+  font-family: 'Outfit', sans-serif;
+}
 html,
 body {
   padding: 0;

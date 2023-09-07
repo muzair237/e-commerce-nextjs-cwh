@@ -9,9 +9,9 @@ import style from '../styles/footer.module.css'
 export default function Footer() {
     return (
         <>
-            <footer className="text-center text-lg-start bg-light text-muted">
-                <section>
-                    <div className="container text-center text-md-start mt-5">
+            <footer className="text-center text-lg-start bg-dark text-light mt-5">
+                <section className='pt-1'>
+                    <div className="container text-center text-md-start">
                         <div className="row mt-3">
                             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                                 <Link className={`${style.logo}`} href="/"><h6 className="text-uppercase fw-bold mb-4 logo">Codeswear</h6></Link>
