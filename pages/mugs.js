@@ -8,7 +8,7 @@ export default function mugs() {
       <Container>
         <Row>
           <Col className="mt-4" md={4}>
-            <Card image="https://m.media-amazon.com/images/I/81S3PiU7aCL._AC_UL600_FMwebp_QL65_.jpg" title="Wear The Code (Mug)" description="Enjoy your morning coffee or tea in style with our 'Wear The Code' mug. Made from high-quality ceramic." price="$30" />
+            <Card image="https://m.media-amazon.com/images/I/81S3PiU7aCL._AC_UL600_FMwebp_QL65_.jpg" title="Wear The Code (Mug)" description="Enjoy your morning coffee or tea in style with our 'Wear The Code' mug. Made from high-quality ceramic." price="30" />
           </Col>
         </Row>
       </Container>

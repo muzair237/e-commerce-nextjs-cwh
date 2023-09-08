@@ -4,7 +4,8 @@ export const initialState = {
     tShirt: 0,
     hoodie: 0,
     sticker: 0,
-    mug: 0
+    mug: 0,
+    subTotal: 0
 };
 
 
@@ -42,6 +43,9 @@ const cartSlice = createSlice({
         mugsDecrement: (state, action) => {
             state.mug = Math.max(0, state.mug - action.payload); 
         },
+        subTotalIncrement: (state,action)=>{
+            state.subTotal = Math.max(0, state.subTotal + action.payload);
+        }
     },
 });
 
@@ -54,6 +58,7 @@ export const {
     stickersIncrement,
     stickersDecrement,
     mugsIncrement,
-    mugsDecrement
+    mugsDecrement,
+    subTotalIncrement
 } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -8,12 +8,13 @@ import {
   hoodiesIncrement,
   stickersIncrement,
   mugsIncrement,
+  subTotalIncrement,
 } from "../../slices/cart/reducer"
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 export default function slug() {
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
   const { title, price, description, image } = router.query;
   const [service, setService] = useState();
   const [cartItem, setCartItem] = useState(1);
@@ -69,7 +70,7 @@ export default function slug() {
               <div className="small mb-1">SKU: BST-498</div>
               <h1 className="display-5 fw-bolder">{title}</h1>
               <div className="fs-5 mb-5">
-                <span>{price}.00</span>
+                <span>${price}.00</span>
               </div>
               <p className="lead">{description}</p>
               <form onSubmit={handleCartItem}>
@@ -78,7 +79,7 @@ export default function slug() {
                     e.preventDefault();
                     setCartItem(e.target.value);
                   }} defaultValue={cartItem} min={1} type="number" style={{ maxWidth: "4.5rem" }} />
-                  <button className="btn btn-outline-dark flex-shrink-0" type="submit">
+                  <button onClick={()=> dispatch(subTotalIncrement(parseInt(price)))} className="btn btn-outline-dark flex-shrink-0" type="submit">
                     <i className="bi-cart-fill me-1"></i>
                     Add to Cart
                   </button>

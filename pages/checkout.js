@@ -7,7 +7,9 @@ import {
 } from "reactstrap";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import { useSelector } from 'react-redux';
 export default function checkout() {
+  const cartData = useSelector((state) => state?.Cart);
   const initialValues = {
     name: "",
     email: "",
@@ -146,16 +148,25 @@ export default function checkout() {
                 </div>
               </Col>
             </Row>
-            <div class="d-grid gap-2 col-3 mx-auto mt-4">
-              <button class="btn btn-outline-dark" type="button">Submit</button>
+            <div className="d-grid gap-2 col-3 mx-auto mt-4">
+              <button className="btn btn-outline-dark" type="button">Submit</button>
             </div>
           </Form>
         </Formik>
         <hr />
       </Container>
       <Container className='mt-4'>
-        <h5 className=''>Review Cart Items: </h5>
+        <h4 className=''>Review Cart Items: </h4>
+        <div className="cartItems mt-4 mx-4">
+          <h5>{`No. of T-Shirts => ${cartData?.tShirt}`}</h5>
+          <h5>{`No. of Hoodies => ${cartData?.hoodie}`}</h5>
+          <h5>{`No. of Stickers => ${cartData?.sticker}`}</h5>
+          <h5>{`No. of Mugs => ${cartData?.mug}`}</h5>
+
+          <h5>Sub Total: ${cartData?.subTotal}</h5>
+        </div>
       </Container>
+      
     </>
   )
 }
