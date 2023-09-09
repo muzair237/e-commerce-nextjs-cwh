@@ -9,12 +9,12 @@ import style from '../styles/footer.module.css'
 export default function Footer() {
     return (
         <>
-            <footer className="text-center text-lg-start bg-dark text-light mt-5">
+            <footer className="text-center text-lg-start bg-dark text-light mt-0">
                 <section className='pt-1'>
                     <div className="container text-center text-md-start">
                         <div className="row mt-3">
                             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                                <Link className={`${style.logo}`} href="/"><h6 className="text-uppercase fw-bold mb-4 logo">Codeswear</h6></Link>
+                                <Link className={`${style.logo}`} href="/">Codeswear</Link>
                                 <p>
                                     Here you can use rows and columns to organize your footer content. Lorem ipsum
                                     dolor sit amet, consectetur adipisicing elit.

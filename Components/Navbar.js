@@ -6,13 +6,25 @@ import { BiPlusCircle, BiMinusCircle } from 'react-icons/bi';
 import { MdShoppingCartCheckout } from 'react-icons/md';
 import { Offcanvas, OffcanvasHeader, Button, OffcanvasBody, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { resetCart } from '../slices/cart/reducer';
+import {
+    resetCart,
+    tShirtsIncrement,
+    tShirtsDecrement,
+    hoodiesIncrement,
+    hoodiesDecrement,
+    stickersIncrement,
+    stickersDecrement,
+    mugsIncrement,
+    mugsDecrement,
+    subTotalIncrement,
+    subTotalDecrement
+} from "../slices/cart/reducer";
 import { useRouter } from 'next/router';
 
 export default function Navbar() {
-    const router = useRouter();  
+    const router = useRouter();
     const dispatch = useDispatch();
     const cartData = useSelector((state) => state?.Cart);
     const areAllCartDataNull = Object.values(cartData).every((value) => value === 0);
@@ -23,7 +35,7 @@ export default function Navbar() {
 
     const toggleOffcanvas = () => {
         setOffcanvasOpen(!isOffcanvasOpen);
-      };
+    };
     const toggleModal = () => setModal(!modal);
     const clearCart = () => {
         toast.success("Cart Cleared Successfully!")
@@ -91,10 +103,7 @@ export default function Navbar() {
                                     <p className={`${style.itemName}`}> — {cartData?.mug}</p>
                                 </div>
                                 <div className="mt-4">
-                                    <button onClick={()=>{
-                                        toggleOffcanvas();
-                                        router.push("/checkout")
-                                        }} className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </button>
+                                    <Link href="/checkout" onClick={()=>toggleOffcanvas()} className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </Link>
                                     <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart</button>
 
                                     <Modal isOpen={modal} toggle={toggleModal}>

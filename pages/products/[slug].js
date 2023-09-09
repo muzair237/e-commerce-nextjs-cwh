@@ -46,7 +46,6 @@ export default function slug() {
     pinCode: Yup
       .number()
       .typeError('Please Enter a Valid Number!'),
-
   });
   const onSubmit = async (values) => {
     let pins = await axios.get(`http://localhost:3000/api/pincode`);
@@ -60,7 +59,6 @@ export default function slug() {
 
 
   return (
-    //  <p>Post: {router.query.slug}</p>
     <>
       <section className="py-5">
         <div className="container px-4 px-lg-5 my-2">
@@ -103,7 +101,6 @@ export default function slug() {
                       <p>Yay! This Pincode is serviceable</p>
                     )
                   ) : null}
-
                 </Form>
               </Formik>
             </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import {
   Container,
   Row,
@@ -8,6 +8,7 @@ import {
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
 export default function checkout() {
   const cartData = useSelector((state) => state?.Cart);
   const initialValues = {
@@ -38,6 +39,11 @@ export default function checkout() {
   const onSubmit = (values) => {
     console.log("Formik Values: ", values)
   }
+  const [isClient, setIsClient] = useState(false)
+ 
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   return (
     <>
       <Container className='mt-5'>
@@ -149,13 +155,15 @@ export default function checkout() {
               </Col>
             </Row>
             <div className="d-grid gap-2 col-3 mx-auto mt-4">
-              <button className="btn btn-outline-dark" type="button">Submit</button>
+              <button className="btn btn-outline-dark" type="submit">Submit</button>
             </div>
           </Form>
         </Formik>
         <hr />
       </Container>
-      <Container className='mt-4'>
+      {
+        isClient ? (
+          <Container className='mt-4'>
         <h4 className=''>Review Cart Items: </h4>
         <div className="cartItems mt-4 mx-4">
           <h5>{`No. of T-Shirts => ${cartData?.tShirt}`}</h5>
@@ -164,8 +172,14 @@ export default function checkout() {
           <h5>{`No. of Mugs => ${cartData?.mug}`}</h5>
 
           <h5>Sub Total: ${cartData?.subTotal}</h5>
+
+          <Link href="/order" className='btn btn-outline-dark btn-sm mt-2'>Place Order</Link>
         </div>
       </Container>
+        ) : (
+          null
+        )
+      }
       
     </>
   )
