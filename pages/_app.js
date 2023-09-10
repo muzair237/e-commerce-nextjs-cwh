@@ -20,12 +20,11 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = configureStore({
+export const store = configureStore({
   reducer: persistedReducer,
   devTools: true,
 });
 
-const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -60,5 +59,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export { store, persistor };
 export default MyApp;

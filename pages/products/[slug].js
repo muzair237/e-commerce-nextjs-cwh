@@ -12,10 +12,14 @@ import {
 } from "../../slices/cart/reducer"
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import Image from "next/image";
 export default function slug() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { title, price, description, image } = router.query;
+  let { title, price, description, image, color, size } = router.query;
+  color = color ? color.split(',') : [];
+  size = size ? size.split(',') : [];
+
   const [service, setService] = useState();
   const [cartItem, setCartItem] = useState(1);
   const [showPinCodeMessage, setShowPinCodeMessage] = useState(false);
@@ -52,8 +56,15 @@ export default function slug() {
     if (pins?.data.includes(Number(values.pinCode))) {
       setShowPinCodeMessage(true);
       setService(true);
+      setTimeout(() => {
+        setShowPinCodeMessage(false)
+      }, 6000);
     } else {
+      setShowPinCodeMessage(true);
       setService(false);
+      setTimeout(() => {
+        setShowPinCodeMessage(false)
+      }, 6000);
     }
   }
 
@@ -68,7 +79,7 @@ export default function slug() {
               <div className="small mb-1">SKU: BST-498</div>
               <h1 className="display-5 fw-bolder">{title}</h1>
               <div className="fs-5 mb-5">
-                <span>${price}.00</span>
+                <span>${price}</span>
               </div>
               <p className="lead">{description}</p>
               <form onSubmit={handleCartItem}>
@@ -77,11 +88,41 @@ export default function slug() {
                     e.preventDefault();
                     setCartItem(e.target.value);
                   }} defaultValue={cartItem} min={1} type="number" style={{ maxWidth: "4.5rem" }} />
-                  <button onClick={()=> dispatch(subTotalIncrement(parseInt(price)))} className="btn btn-outline-dark flex-shrink-0" type="submit">
+                  <select
+                    className="form-select"
+                    id="colorSelect"
+                    name="colorSelect"
+                    style={{ width: "150px" }}
+                  >
+                    <option value="" disabled selected>
+                      Select Color
+                    </option>
+                    {color.map((color, index) => (
+                      <option key={index} value={color}>
+                        {color}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="form-select mx-2"
+                    id="sizeSelect"
+                    name="sizeSelect"
+                    style={{ width: "150px" }}
+                  >
+                    <option value="" disabled selected>
+                      Select Size
+                    </option>
+                    {size.map((size, index) => (
+                      <option key={index} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <button onClick={() => dispatch(subTotalIncrement(parseInt(price)))} className="btn btn-outline-dark flex-shrink-0 mt-3" type="submit">
                     <i className="bi-cart-fill me-1"></i>
                     Add to Cart
                   </button>
-                </div>
               </form>
               <Formik
                 initialValues={initialValues}

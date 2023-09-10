@@ -1,17 +1,48 @@
 import React from 'react'
 import Card from '../Components/Card'
 import { Container, Row, Col } from 'reactstrap'
+import { GET_ALL_PRODUCTS } from "../Helpers/urlHelpers";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-export default function tshirts() {
+export default function tshirts({ productData }) {
+  console.log(productData);
   return (
     <>
-      <Container>
-        <Row>
-          <Col className="mt-4" md={4}>
-            <Card image="https://m.media-amazon.com/images/I/81gb2Hwt0qL._AC_UL600_FMwebp_QL65_.jpg" title="Wear The Code (T-Shirt)" description="Upgrade your wardrobe with our Coding Ninja T-Shirt. Made from comfortable and breathable cotton, this t-shirt features a cool ninja-themed design. (S, M, L, XL, XXL)" price="30" />
-          </Col>
-        </Row>
-      </Container>
+      {
+        productData.length > 0 ? (
+          <Container>
+            <Row>
+              {productData.map((item, index) => (
+                <Col className='mt-3' key={index} md={4}>
+                  <Card image={item.img} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        ) : (
+          <h4>No Data Found!</h4>
+        )
+      }
+
     </>
   )
+}
+export async function getServerSideProps(context) {
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/${GET_ALL_PRODUCTS}`);
+    if (response?.data) {
+      const productData = response?.data;
+      return {
+        props: {
+          productData,
+        },
+      };
+    }
+  } catch (error) {
+    toast.error(error, { theme: 'colored' });
+  }
+  return {
+    props: {},
+  };
 }
