@@ -26,8 +26,9 @@ import { useRouter } from 'next/router';
 export default function Navbar() {
     const router = useRouter();
     const dispatch = useDispatch();
-    const cartData = useSelector((state) => state?.Cart);
-    const areAllCartDataNull = Object.values(cartData).every((value) => value === 0);
+    const cartData = useSelector((state) => state?.Cart?.cart);
+    const isCartNull = cartData?.length;
+    console.log(isCartNull);
 
     const [isOffcanvasOpen, setOffcanvasOpen] = useState(false);
     const [modal, setModal] = useState(false);
@@ -80,30 +81,27 @@ export default function Navbar() {
                         <p className="outfit fw-bold">Shopping Cart</p>
                     </OffcanvasHeader>
                     {
-                        areAllCartDataNull ? (
+                        !isCartNull ? (
                             <OffcanvasHeader>
                                 <p className="outfit fw-medium fs-5">Cart is Empty! Enter Few Items to Checkout!</p>
                             </OffcanvasHeader>
                         ) : (
                             <OffcanvasBody className="outfit fw-medium fs-5">
-                                <div className="d-flex">
-                                    <p className={`${style.itemName}`}>1. T-Shirts</p>
-                                    <p className={`${style.itemName}`}> — {cartData?.tShirt}</p>
-                                </div>
-                                <div className="d-flex">
-                                    <p className={`${style.itemName}`}>2. Hoodies</p>
-                                    <p className={`${style.itemName}`}> — {cartData?.hoodie}</p>
-                                </div>
-                                <div className="d-flex">
-                                    <p className={`${style.itemName}`}>3. Stickers</p>
-                                    <p className={`${style.itemName}`}> — {cartData?.sticker}</p>
-                                </div>
-                                <div className="d-flex">
-                                    <p className={`${style.itemName}`}>4. Mugs</p>
-                                    <p className={`${style.itemName}`}> — {cartData?.mug}</p>
-                                </div>
+                                {
+                                    cartData?.map((item, index) => {
+                                        return (
+                                            <h5>
+                                                {`${index + 1} - ${item?.name} `}
+                                                <span className="text-muted">
+                                                    ({`${item?.color}/${item?.size}/${item?.quantity} piece(s)`})
+                                                </span>
+                                            </h5>
+
+                                        )
+                                    })
+                                }
                                 <div className="mt-4">
-                                    <Link href="/checkout" onClick={()=>toggleOffcanvas()} className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </Link>
+                                    <Link href="/checkout" onClick={() => toggleOffcanvas()} className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </Link>
                                     <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart</button>
 
                                     <Modal isOpen={modal} toggle={toggleModal}>

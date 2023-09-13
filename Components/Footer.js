@@ -9,7 +9,7 @@ import style from '../styles/footer.module.css'
 export default function Footer() {
     return (
         <>
-            <footer className="text-center text-lg-start bg-dark text-light mt-0">
+            <footer className="text-center text-lg-start bg-dark text-light mt-2">
                 <section className='pt-1'>
                     <div className="container text-center text-md-start">
                         <div className="row mt-3">

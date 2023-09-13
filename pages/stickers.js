@@ -1,21 +1,51 @@
 import React from 'react'
 import Card from '../Components/Card'
 import { Container, Row, Col } from 'reactstrap'
-// import BreadCrumb from '../Components/Common/BreadCrumb'
+import { GET_ALL_PRODUCTS } from "../Helpers/urlHelpers";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-export default function Stickers() {
+export default function stickers({ productData }) {
+  const stickersData = productData.filter((item)=>{
+    return item.category === "Sticker";
+  })
   return (
     <>
-      {/* <div className='page-content'> */}
-        <Container>
-          {/* <BreadCrumb style={{ width: "98%", marginLeft: "12px" }} /> */}
-          <Row>
-            <Col className="mt-4" md={4}>
-              <Card image="https://m.media-amazon.com/images/I/719z+TnTJCL._AC_UL600_FMwebp_QL65_.jpg" title="Wear The Code (Sticker)" description="Decorate your laptop, water bottle, or workspace with our Developer Sticker Pack. This pack includes a variety of high-quality vinyl stickers." price="30" />
-            </Col>
-          </Row>
-        </Container>
-      {/* </div> */}
+      {
+        productData.length > 0 ? (
+          <Container>
+            <Row>
+              {stickersData.map((item, index) => (
+                <Col className='mt-3' key={index} md={4}>
+                  <Card image={item.img} quantity={item.availableQty} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        ) : (
+          <h4>No Data Found!</h4>
+        )
+      }
+
     </>
   )
+}
+export async function getServerSideProps(context) {
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/${GET_ALL_PRODUCTS}`);
+    console.log(response?.data);
+    if (response?.data) {
+      const productData = response?.data;
+      return {
+        props: {
+          productData,
+        },
+      };
+    }
+  } catch (error) {
+    toast.error(error, { theme: 'colored' });
+  }
+  return {
+    props: {},
+  };
 }

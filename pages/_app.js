@@ -24,6 +24,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   devTools: true,
 });
+const persistor = persistStore(store);
 
 
 function MyApp({ Component, pageProps }) {

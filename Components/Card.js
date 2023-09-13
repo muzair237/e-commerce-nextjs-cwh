@@ -7,7 +7,7 @@ import style from "../styles/card.module.css";
 export default function Card(props) {
     return (
         <>
-            <div className={`${style.Card} card border-info mx-auto mb-3  hvyg`}>
+            <div className={`${style.Card} card border-info mx-auto mb-3`}>
                 <Image className="mx-auto" src={props.image} width={200} height={200} />
                 <div className="card-body">
                     <h5 className="card-title">{props.title}</h5>
@@ -20,6 +20,7 @@ export default function Card(props) {
                             price: props.price,
                             description: props.description,
                             image: props.image,
+                            quantity: props.quantity,
                             color: props.color.join(','),
                             size: props.size.join(',')
                         }

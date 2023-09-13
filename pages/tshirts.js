@@ -6,16 +6,18 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 export default function tshirts({ productData }) {
-  console.log(productData);
+  const tshirtsData = productData.filter((item)=>{
+    return item.category === "TShirt";
+  })
   return (
     <>
       {
         productData.length > 0 ? (
           <Container>
             <Row>
-              {productData.map((item, index) => (
-                <Col className='mt-3' key={index} md={4}>
-                  <Card image={item.img} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
+              {tshirtsData.map((item, index) => (
+                <Col className='mt-3' key={index} md={6} lg={4}>
+                  <Card image={item.img} quantity={item.availableQty} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
                 </Col>
               ))}
             </Row>

@@ -1,48 +1,47 @@
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from 'next/router'
 import axios from 'axios';
 import { useState } from 'react';
 import {
-  tShirtsIncrement,
-  hoodiesIncrement,
-  stickersIncrement,
-  mugsIncrement,
+  pushCart,
   subTotalIncrement,
 } from "../../slices/cart/reducer"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import Image from "next/image";
 export default function slug() {
   const dispatch = useDispatch();
   const router = useRouter();
-  let { title, price, description, image, color, size } = router.query;
+  const cartData = useSelector((state) => state?.Cart);
+
+  let { title, price, quantity, description, image, color, size } = router.query;
   color = color ? color.split(',') : [];
   size = size ? size.split(',') : [];
 
   const [service, setService] = useState();
-  const [cartItem, setCartItem] = useState(1);
   const [showPinCodeMessage, setShowPinCodeMessage] = useState(false);
 
-  const productTypeToActionMap = {
-    'T-Shirt': tShirtsIncrement,
-    'Hoody': hoodiesIncrement,
-    'Sticker': stickersIncrement,
-    'Mug': mugsIncrement,
+  const initialState = {
+    quantity: 1,
+    color: "",
+    size: "",
+  }
+  const validationModal = Yup.object().shape({
+    color: Yup.string().required("Color is required"),
+    size: Yup.string().required("Size is required"),
+  });
+  const onHandle = (values) => {
+    const modified = {
+      name: title,
+      quantity: quantity, 
+      ...values,
+    };
+    dispatch(pushCart(modified));
+    toast.success("Item Added to Cart!");
+
   };
 
-  const handleCartItem = (e) => {
-    e.preventDefault();
-    const match = title.match(/\(([^)]+)\)/);
-    const result = match ? match[1] : null;
-    const action = productTypeToActionMap[result];
-    if (action) {
-      dispatch(action(parseInt(cartItem)));
-      toast.success("Item Added to Cart!")
-    } else {
-      toast.error("An Error Occured. Please Try Again!");
-    }
-  }
+
   const initialValues = {
     pinCode: ""
   }
@@ -67,7 +66,11 @@ export default function slug() {
       }, 6000);
     }
   }
-
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  })
 
   return (
     <>
@@ -82,68 +85,90 @@ export default function slug() {
                 <span>${price}</span>
               </div>
               <p className="lead">{description}</p>
-              <form onSubmit={handleCartItem}>
-                <div className="d-flex mt-3">
-                  <input className="form-control text-center me-3" id="cartItem" name="cartItem" onChange={(e) => {
-                    e.preventDefault();
-                    setCartItem(e.target.value);
-                  }} defaultValue={cartItem} min={1} type="number" style={{ maxWidth: "4.5rem" }} />
-                  <select
-                    className="form-select"
-                    id="colorSelect"
-                    name="colorSelect"
-                    style={{ width: "150px" }}
-                  >
-                    <option value="" disabled selected>
-                      Select Color
-                    </option>
-                    {color.map((color, index) => (
-                      <option key={index} value={color}>
-                        {color}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="form-select mx-2"
-                    id="sizeSelect"
-                    name="sizeSelect"
-                    style={{ width: "150px" }}
-                  >
-                    <option value="" disabled selected>
-                      Select Size
-                    </option>
-                    {size.map((size, index) => (
-                      <option key={index} value={size}>
-                        {size}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <button onClick={() => dispatch(subTotalIncrement(parseInt(price)))} className="btn btn-outline-dark flex-shrink-0 mt-3" type="submit">
-                    <i className="bi-cart-fill me-1"></i>
-                    Add to Cart
-                  </button>
-              </form>
               <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
+                initialValues={initialState}
+                validationSchema={validationModal}
+                onSubmit={onHandle}
               >
                 <Form>
                   <div className="d-flex mt-3">
-                    <Field style={{ width: "33%" }} placeholder="Enter Pin Code" name="pinCode" id="pinCode" className="form-control" />
-                    <button type='submit' className='btn  btn-outline-success mx-3'>Check</button>
+                    <Field
+                      type="number"
+                      name="quantity"
+                      id="quantity"
+                      className="form-control text-center me-3"
+                      min={1}
+                      style={{ maxWidth: "4.5rem" }}
+                    />
+                    <Field
+                      as="select"
+                      name="color"
+                      id="color"
+                      className="form-select"
+                      style={{ width: "150px" }}
+                    >
+                      <option selected value="" disabled>
+                        Select Color
+                      </option>
+                      {color.map((color, index) => (
+                        <option key={index} value={color}>
+                          {color}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name='color'>{error => <div className='error'>{error}</div>}</ErrorMessage>
+                    <Field
+                      as="select"
+                      name="size"
+                      id="size"
+                      className="form-select mx-2"
+                      style={{ width: "150px" }}
+                    >
+                      <option selected value="" disabled>
+                        Select Size
+                      </option>
+                      {size.map((size, index) => (
+                        <option key={index} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage name='size'>{error => <div className='error'>{error}</div>}</ErrorMessage>
                   </div>
-                  <ErrorMessage name='pinCode' component='div' className='text-danger' />
-                  {showPinCodeMessage ? (
-                    !service ? (
-                      <p>Sorry! We couldn't deliver to this place</p>
-                    ) : (
-                      <p>Yay! This Pincode is serviceable</p>
-                    )
-                  ) : null}
+                  <button
+                    type="submit"
+                    className="btn btn-outline-dark flex-shrink-0 mt-3"
+                  >
+                    <i className="bi-cart-fill me-1"></i>
+                    Add to Cart
+                  </button>
                 </Form>
               </Formik>
+              <form onSubmit={formik.handleSubmit}>
+                <div className="d-flex mt-3">
+                  <input
+                    style={{ width: "33%" }}
+                    placeholder="Enter Pin Code"
+                    name="pinCode"
+                    id="pinCode"
+                    className="form-control"
+                    {...formik.getFieldProps("pinCode")}
+                  />
+                  <button type="submit" className="btn btn-outline-success mx-3">
+                    Check
+                  </button>
+                </div>
+                {formik.touched.pinCode && formik.errors.pinCode ? (
+                  <div className="text-danger">{formik.errors.pinCode}</div>
+                ) : null}
+                {showPinCodeMessage ? (
+                  !service ? (
+                    <p>Sorry! We couldn't deliver to this place</p>
+                  ) : (
+                    <p>Yay! This Pincode is serviceable</p>
+                  )
+                ) : null}
+              </form>
             </div>
           </div>
         </div>
