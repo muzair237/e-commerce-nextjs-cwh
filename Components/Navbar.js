@@ -10,25 +10,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
     resetCart,
-    tShirtsIncrement,
-    tShirtsDecrement,
-    hoodiesIncrement,
-    hoodiesDecrement,
-    stickersIncrement,
-    stickersDecrement,
-    mugsIncrement,
-    mugsDecrement,
-    subTotalIncrement,
-    subTotalDecrement
 } from "../slices/cart/reducer";
 import { useRouter } from 'next/router';
 
 export default function Navbar() {
     const router = useRouter();
     const dispatch = useDispatch();
-    const cartData = useSelector((state) => state?.Cart?.cart);
-    const isCartNull = cartData?.length;
-    console.log(isCartNull);
+    const cartData = useSelector((state) => state?.Cart);
+    const isCartNull = cartData?.cart?.length;
 
     const [isOffcanvasOpen, setOffcanvasOpen] = useState(false);
     const [modal, setModal] = useState(false);
@@ -88,18 +77,19 @@ export default function Navbar() {
                         ) : (
                             <OffcanvasBody className="outfit fw-medium fs-5">
                                 {
-                                    cartData?.map((item, index) => {
+                                    cartData?.cart?.map((item, index) => {
                                         return (
-                                            <h5>
+                                            <h5 key={index}>
                                                 {`${index + 1} - ${item?.name} `}
                                                 <span className="text-muted">
                                                     ({`${item?.color}/${item?.size}/${item?.quantity} piece(s)`})
                                                 </span>
                                             </h5>
-
                                         )
                                     })
                                 }
+                                <hr />
+                                <h5>SubTotal: ${(cartData?.subTotal).toFixed(2)}</h5>
                                 <div className="mt-4">
                                     <Link href="/checkout" onClick={() => toggleOffcanvas()} className='btn btn-success'>Checkout <MdShoppingCartCheckout className='fs-4' /> </Link>
                                     <button onClick={toggleModal} className='btn btn-danger mx-2'>Clear Cart</button>

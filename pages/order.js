@@ -1,6 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 export default function Order() {
+  const cartData = useSelector((state)=> state?.Cart?.cart);
+  console.log(cartData);
   return (
     <>
       <header className="pb-5">
@@ -24,18 +27,6 @@ export default function Order() {
                     <tbody>
                       <tr>
                         <th scope="row">1</th>
-                        <td>Wear The Code - T-Shirt</td>
-                        <td>1</td>
-                        <td>$30.00</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Wear The Code - T-Shirt</td>
-                        <td>1</td>
-                        <td>$30.00</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
                         <td>Wear The Code - T-Shirt</td>
                         <td>1</td>
                         <td>$30.00</td>

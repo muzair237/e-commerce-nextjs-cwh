@@ -31,15 +31,29 @@ export default function slug() {
     size: Yup.string().required("Size is required"),
   });
   const onHandle = (values) => {
-    const modified = {
-      name: title,
-      quantity: quantity, 
-      ...values,
-    };
+    console.log(values);
+    let modified;
+  
+    if (values?.quantity > 1) {
+      modified = {
+        name: title,
+        quantity: values?.quantity,
+        price: price * parseInt(values?.quantity),
+        ...values,
+      };
+    } else {
+      modified = {
+        name: title,
+        quantity: values.quantity,
+        price: price,
+        ...values,
+      };
+    }
     dispatch(pushCart(modified));
+    dispatch(subTotalIncrement(parseFloat(modified?.price)));
     toast.success("Item Added to Cart!");
-
   };
+  
 
 
   const initialValues = {

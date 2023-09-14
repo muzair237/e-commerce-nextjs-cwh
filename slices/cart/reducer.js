@@ -1,11 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const initialState = {
+    id: Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000,
     cart: [],
-    tShirt: 0,
-    hoodie: 0,
-    sticker: 0,
-    mug: 0,
     subTotal: 0
 };
 
@@ -15,12 +12,13 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         resetCart: (state) => {
+            state.id = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000,
             state.cart = [],
             state.subTotal = 0
         },
         pushCart: (state, action) => {
             state.cart = [...state.cart, action.payload];
-          },          
+        },
         // tShirtsIncrement: (state, action) => {
         //     state.tShirt = Math.max(0, state.tShirt + action.payload); 
         // },
@@ -45,10 +43,10 @@ const cartSlice = createSlice({
         // mugsDecrement: (state, action) => {
         //     state.mug = Math.max(0, state.mug - action.payload); 
         // },
-        subTotalIncrement: (state,action)=>{
+        subTotalIncrement: (state, action) => {
             state.subTotal = Math.max(0, state.subTotal + action.payload);
         },
-        subTotalDecrement: (state,action)=>{
+        subTotalDecrement: (state, action) => {
             state.subTotal = Math.max(0, state.subTotal - action.payload);
         }
     },
