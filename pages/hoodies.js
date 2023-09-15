@@ -17,7 +17,7 @@ export default function hoodies({ productData }) {
             <Row>
               {hoodiesData.map((item, index) => (
                 <Col className='mt-3' key={index} md={4}>
-                  <Card image={item.img} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
+                  <Card id={item._id} image={item.img} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
                 </Col>
               ))}
             </Row>

@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 
 export default function Order() {
   const cartData = useSelector((state)=> state?.Cart?.cart);
-  console.log(cartData);
   return (
     <>
       <header className="pb-5">

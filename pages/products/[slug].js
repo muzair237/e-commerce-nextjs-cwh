@@ -6,6 +6,7 @@ import { useState } from 'react';
 import {
   pushCart,
   subTotalIncrement,
+  manipulateCart
 } from "../../slices/cart/reducer"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -13,8 +14,7 @@ export default function slug() {
   const dispatch = useDispatch();
   const router = useRouter();
   const cartData = useSelector((state) => state?.Cart);
-
-  let { title, price, quantity, description, image, color, size } = router.query;
+  let { id, title, price, description, image, color, size } = router.query;
   color = color ? color.split(',') : [];
   size = size ? size.split(',') : [];
 
@@ -31,29 +31,48 @@ export default function slug() {
     size: Yup.string().required("Size is required"),
   });
   const onHandle = (values) => {
-    console.log(values);
     let modified;
-  
-    if (values?.quantity > 1) {
+
+    const unique = cartData?.cart?.find((item) => {
+      return item?.name === title && item?.color === values?.color && item?.size === values?.size;
+    });
+
+    const numericQuantity = parseInt(quantity.value); // Extract numeric value from HTMLInputElement
+
+    if (unique?.color === values?.color && unique?.size === values?.size ) {
       modified = {
+        ...unique,
+        quantity: numericQuantity + unique?.quantity,
+        price: price * numericQuantity + parseFloat(unique?.price),
+      };
+      dispatch(manipulateCart(modified));
+      dispatch(subTotalIncrement(parseFloat(price * numericQuantity)));
+      toast.success("Item Added to Cart!");
+      return;
+    } else if (values?.quantity > 1) {
+      modified = {
+        id: id,
         name: title,
         quantity: values?.quantity,
         price: price * parseInt(values?.quantity),
-        ...values,
+        ...values
       };
     } else {
       modified = {
+        id: id,
         name: title,
         quantity: values.quantity,
         price: price,
-        ...values,
+        ...values
       };
     }
     dispatch(pushCart(modified));
     dispatch(subTotalIncrement(parseFloat(modified?.price)));
     toast.success("Item Added to Cart!");
   };
-  
+
+
+
 
 
   const initialValues = {

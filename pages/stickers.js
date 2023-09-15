@@ -17,7 +17,7 @@ export default function stickers({ productData }) {
             <Row>
               {stickersData.map((item, index) => (
                 <Col className='mt-3' key={index} md={4}>
-                  <Card image={item.img} quantity={item.availableQty} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
+                  <Card id={item._id} image={item.img} quantity={item.availableQty} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
                 </Col>
               ))}
             </Row>
@@ -33,7 +33,6 @@ export default function stickers({ productData }) {
 export async function getServerSideProps(context) {
   try {
     const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/${GET_ALL_PRODUCTS}`);
-    console.log(response?.data);
     if (response?.data) {
       const productData = response?.data;
       return {

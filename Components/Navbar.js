@@ -17,6 +17,7 @@ export default function Navbar() {
     const router = useRouter();
     const dispatch = useDispatch();
     const cartData = useSelector((state) => state?.Cart);
+
     const isCartNull = cartData?.cart?.length;
 
     const [isOffcanvasOpen, setOffcanvasOpen] = useState(false);

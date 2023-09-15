@@ -25,16 +25,16 @@ export default function Footer() {
                                     Products
                                 </h6>
                                 <p>
-                                    <Link href="#!" className={`${style.logo}`}>Angular</Link>
+                                    <Link href="/tshirts" className={`${style.logo}`}>T-Shirts</Link>
                                 </p>
                                 <p>
-                                    <Link href="#!" className={`${style.logo}`}>React</Link>
+                                    <Link href="/hoodies" className={`${style.logo}`}>Hoodies</Link>
                                 </p>
                                 <p>
-                                    <Link href="#!" className={`${style.logo}`}>Vue</Link>
+                                    <Link href="/mugs" className={`${style.logo}`}>Mugs</Link>
                                 </p>
                                 <p>
-                                    <Link href="#!" className={`${style.logo}`}>Laravel</Link>
+                                    <Link href="/stickers" className={`${style.logo}`}>Stickers</Link>
                                 </p>
                             </div>
                             <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">

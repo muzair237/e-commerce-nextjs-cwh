@@ -37,7 +37,6 @@ export default function checkout() {
             .required('PIN code is required'),
     });
     const onSubmit = (values) => {
-        console.log("Formik Values: ", values)
     }
     const [isClient, setIsClient] = useState(false)
 

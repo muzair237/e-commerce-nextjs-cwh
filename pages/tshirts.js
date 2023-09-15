@@ -17,7 +17,7 @@ export default function tshirts({ productData }) {
             <Row>
               {tshirtsData.map((item, index) => (
                 <Col className='mt-3' key={index} md={6} lg={4}>
-                  <Card image={item.img} quantity={item.availableQty} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
+                  <Card id={item._id} image={item.img} quantity={item.availableQty} size={item.size} color={item.color} title={item.title} description={item.desc} slug={item.slug} price={item.price} />
                 </Col>
               ))}
             </Row>

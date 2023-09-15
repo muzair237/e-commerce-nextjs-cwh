@@ -16,6 +16,7 @@ export default function Card(props) {
                     <Link href={{
                         pathname: `products/${props.slug}`,
                         query: {
+                            id: props.id,
                             title: props.title,
                             price: props.price,
                             description: props.description,
