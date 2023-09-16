@@ -9,7 +9,6 @@ export default function Home() {
       <Head>
         <title>Codeswear</title>
         <meta name='description' content='Codeswear.com - Wear The Code' />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container className='px-0' fluid>
         <header className="bg-dark py-5">

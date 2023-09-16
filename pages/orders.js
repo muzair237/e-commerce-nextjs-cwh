@@ -14,7 +14,7 @@ export default function Order() {
                 <h2 className="fw-bolder mb-2">Order Id: 12345</h2>
                 <p className="lead fw-normal mb-4">Your Order has been Successfully Placed!</p>
                 <div className='order-details'>
-                  <table class="table">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th scope="col">#</th>

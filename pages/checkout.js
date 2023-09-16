@@ -8,6 +8,7 @@ import {
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import { useSelector } from 'react-redux';
+import Head from 'next/head';
 
 export default function checkout() {
     const cartData = useSelector((state) => state?.Cart);
@@ -45,6 +46,9 @@ export default function checkout() {
     }, [])
     return (
         <>
+            <Head>
+                <title>Checkout</title>
+            </Head>
             <Container>
                 <header>
                     <div className="container px-5">
@@ -99,7 +103,8 @@ export default function checkout() {
                                                         )}
                                                     </tbody>
                                                 </table>
-                                                <p className='fs-5'><span className='fw-bold'>Sub Total: </span>${cartData?.subTotal.toFixed(2)}</p>
+                                                {cartData?.cart?.length > 0 ? (
+                                                <p className='fs-5'><span className='fw-bold'>Sub Total: </span>${cartData?.subTotal.toFixed(2)}</p> ) : null }
                                             </>
                                         ) : (
                                             null
@@ -107,17 +112,18 @@ export default function checkout() {
                                         }
 
                                     </div>
-
-                                    <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                        <button className="btn btn-outline-dark btn-sm px-4 mt-3 me-sm-3" href="#features">Place Order</button>
-                                    </div>
+                                    {cartData?.cart?.length > 0 ? (
+                                        < div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                            <button className="btn btn-outline-dark btn-sm px-4 mt-3 me-sm-3" href="#features">Place Order</button>
+                                        </div>) : null
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </header>
                 <hr />
-            </Container>
+            </Container >
             <Container>
                 <h4 className='fw-bold text-center'>Delivery Information</h4>
                 <Formik

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from "../styles/navbar.module.css"
 import Link from 'next/link';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-import { BiPlusCircle, BiMinusCircle } from 'react-icons/bi';
 import { MdShoppingCartCheckout } from 'react-icons/md';
+import { BiUserCircle } from 'react-icons/bi';
 import { Offcanvas, OffcanvasHeader, Button, OffcanvasBody, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -12,16 +12,19 @@ import {
     resetCart,
 } from "../slices/cart/reducer";
 import { useRouter } from 'next/router';
+import { logoutUser } from '../slices/auth/thunk';
 
 export default function Navbar() {
     const router = useRouter();
     const dispatch = useDispatch();
+    const userData = useSelector((state) => state?.Login?.user);
+    console.log(userData);
     const cartData = useSelector((state) => state?.Cart);
-
     const isCartNull = cartData?.cart?.length;
 
     const [isOffcanvasOpen, setOffcanvasOpen] = useState(false);
     const [modal, setModal] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
 
     const toggleOffcanvas = () => {
@@ -29,11 +32,17 @@ export default function Navbar() {
     };
     const toggleModal = () => setModal(!modal);
     const clearCart = () => {
-        toast.success("Cart Cleared Successfully!")
+        toast.success("Cart Cleared Successfully!", {
+            autoClose: 800
+        })
         dispatch(resetCart());
         toggleModal();
         toggleOffcanvas();
     }
+    useEffect(() => {
+      setIsClient(true);
+    }, [])
+    
 
     return (
         <>
@@ -59,9 +68,27 @@ export default function Navbar() {
                             </li>
 
                         </ul>
-                        <div className="d-flex" role="search">
+                        {isClient ? (
+                            <div className="d-flex" role="search">
+                            {Object.keys(userData).length === 0 ? (
+                                <Link href="/auth/login">
+                                    <Button type='button' className='btn btn-sm mx-2'>Login</Button>
+                                </Link>
+                            ) : (
+                                <div className="dropstart dropdown-menu-end">
+                                    <BiUserCircle type='button' className='fs-3 text-light mx-2 dropdown-toggle' data-bs-toggle="dropdown" aria-expanded="false"/>
+                                    <ul className="dropdown-menu">
+                                        <li className='dropdown-item'>{`Welcome! ${userData?.name}`}</li>
+                                        <li className='dropdown-item'>{userData?.email}</li>
+                                        <li><hr className="dropdown-divider"/></li>
+                                        <li onClick={()=> dispatch(logoutUser())} type="button" className='dropdown-item'>Logout</li>
+                                    </ul>
+                                </div>
+                            )}
+
                             <AiOutlineShoppingCart type='button' className='fs-3 text-light' onClick={toggleOffcanvas} />
                         </div>
+                        ) : null}
                     </div>
                 </div>
             </nav>

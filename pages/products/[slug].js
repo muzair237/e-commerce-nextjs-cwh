@@ -47,7 +47,9 @@ export default function slug() {
       };
       dispatch(manipulateCart(modified));
       dispatch(subTotalIncrement(parseFloat(price * numericQuantity)));
-      toast.success("Item Added to Cart!");
+      toast.success("Item Added to Cart!",{
+        autoClose: 800
+      });
       return;
     } else if (values?.quantity > 1) {
       modified = {
@@ -70,11 +72,7 @@ export default function slug() {
     dispatch(subTotalIncrement(parseFloat(modified?.price)));
     toast.success("Item Added to Cart!");
   };
-
-
-
-
-
+  
   const initialValues = {
     pinCode: ""
   }

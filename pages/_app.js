@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/globals.css';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
@@ -12,7 +11,8 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import LoadingBar from 'react-top-loading-bar'
+import { useRouter } from 'next/router';
 const persistConfig = {
   key: 'root',
   storage,
@@ -26,10 +26,17 @@ export const store = configureStore({
 });
 const persistor = persistStore(store);
 
-
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+  const [progress, setProgress] = useState(0);
   useEffect(() => {
     import('bootstrap/dist/js/bootstrap.bundle.min.js');
+    router.events.on('routeChangeStart', ()=>{
+      setProgress(40);
+    })
+    router.events.on('routeChangeComplete', ()=>{
+      setProgress(100);
+    })
   }, []);
 
   return (
@@ -40,13 +47,20 @@ function MyApp({ Component, pageProps }) {
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Outfit&display=swap" rel="stylesheet" />
       </Head>
       <Provider store={store}>
+        <LoadingBar
+          color='green'
+          shadow={true}
+          height={2}
+          progress={progress}
+          onLoaderFinished={() => setProgress(0)}
+        />
         <Navbar />
         <Component {...pageProps} />
         <Footer />
       </Provider>
       <ToastContainer
         position="top-right"
-        autoClose={800}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -59,5 +73,4 @@ function MyApp({ Component, pageProps }) {
     </>
   );
 }
-
 export default MyApp;
