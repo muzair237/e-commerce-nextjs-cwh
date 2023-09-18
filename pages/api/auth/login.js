@@ -3,7 +3,6 @@ import User from "../../../models/User";
 import bcrypt from 'bcryptjs';
 import Jwt from 'jsonwebtoken';
 import { validationResult, body } from 'express-validator';
-const key = 'blog';
 
 const validateLoginData = [
     body("email").notEmpty().withMessage("Invalid Username or Email."),
@@ -39,7 +38,7 @@ const handler = async (req, res) => {
                 delete userWithoutPassword.password;
 
                 // Generate a JWT token
-                Jwt.sign({ userWithoutPassword }, key, { expiresIn: "2h" }, (err, token) => {
+                Jwt.sign({ userWithoutPassword }, process.env.JWT_KEY, { expiresIn: "2h" }, (err, token) => {
                     if (err) {
                         res.json({ error: "Failed to generate JWT token",status:false });
                     } else {

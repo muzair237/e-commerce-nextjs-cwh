@@ -7,8 +7,8 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Codeswear</title>
-        <meta name='description' content='Codeswear.com - Wear The Code' />
+        <title>CustomizeMe Co.</title>
+        <meta name='description' content='Customizeme.co - Wear The Code' />
       </Head>
       <Container className='px-0' fluid>
         <header className="bg-dark py-5">

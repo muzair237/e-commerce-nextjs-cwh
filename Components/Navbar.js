@@ -18,7 +18,6 @@ export default function Navbar() {
     const router = useRouter();
     const dispatch = useDispatch();
     const userData = useSelector((state) => state?.Login?.user);
-    console.log(userData);
     const cartData = useSelector((state) => state?.Cart);
     const isCartNull = cartData?.cart?.length;
 
@@ -48,7 +47,7 @@ export default function Navbar() {
         <>
             <nav className="navbar sticky-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
                 <div className="container-fluid">
-                    <Link className="navbar-brand" href="/">Wear The Code</Link>
+                    <Link className="navbar-brand" href="/">CustomizeMe Co.</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>

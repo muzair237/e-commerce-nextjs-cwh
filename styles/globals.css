@@ -1,4 +1,8 @@
 /* styles/globals.css */
+/* @font-face {
+  font-family: 'Outfit', sans-serif;
+  src: url("/assets/fonts/static/Outfit-Bold.ttf") format('truetype');
+} */
 *{
   font-family: 'Outfit', sans-serif;
 }
